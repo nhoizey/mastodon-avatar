@@ -3,7 +3,7 @@ const MASTODON_USERNAME_REGEX =
   /^@?\b([A-Z0-9._%+-]+)@([A-Z0-9.-]+\.[A-Z]{2,})\b$/i;
 
 export default async (request, context) => {
-  console.dir(context);
+  console.dir(request);
   const url = new URL(request.url);
   const username = url.searchParams.get("username");
 
