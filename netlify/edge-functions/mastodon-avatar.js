@@ -23,6 +23,10 @@ export default async (request, context) => {
     `https://${server}/api/v2/search?type=accounts&q=@${user}&limit=1`
   );
   const data = JSON.parse(await response.text());
+  if (data.accounts.length === 0) {
+    console.log(`No data from API for user ${username}`);
+    return await fetch("https://placekitten.com/g/400/400");
+  }
   const avatarUrl = data.accounts[0].avatar_static;
   return await fetch(avatarUrl);
 };
