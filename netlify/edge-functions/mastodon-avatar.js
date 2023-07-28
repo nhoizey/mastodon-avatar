@@ -20,7 +20,7 @@ export default async (request, context) => {
 
   const [, user, server] = matches;
   try {
-    const apiUrl = `https://${server}/api/v2/search?type=accounts&q=@${user}&limit=1`;
+    const apiUrl = `https://${server}/api/v2/search?type=accounts&q=@${user}@${server}&limit=1`;
     const response = await fetch(apiUrl);
 
     const data = JSON.parse(await response.text());
