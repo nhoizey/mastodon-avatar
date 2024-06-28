@@ -19,8 +19,9 @@ export default async (request, context) => {
   }
 
   const [, user, server] = matches;
+  const webfingerUrl = `https://${server}/.well-known/webfinger?resource=acct:${user}@${server}`;
+
   try {
-    const webfingerUrl = `https://${server}/.well-known/webfinger?resource=acct:${user}@${server}`;
     const response = await fetch(webfingerUrl);
 
     const data = JSON.parse(await response.text());
