@@ -20,19 +20,30 @@ export default async (request, context) => {
 
   const [, user, server] = matches;
   try {
-    const apiUrl = `https://mastodon.social/api/v2/search?type=accounts&q=@${user}@${server}&limit=1`;
-    const response = await fetch(apiUrl);
+    const webfingerUrl = `https://${server}/.well-known/webfinger?resource=acct:${user}@${server}`;
+    const response = await fetch(webfingerUrl);
 
     const data = JSON.parse(await response.text());
-    if (data.accounts.length === 0) {
-      console.log(`No data from API for user ${username}`);
+    if (data.links.length === 0) {
+      console.log(`No webfinger link found for user ${username}`);
       return await fetch("https://placekitten.com/g/400/400");
     }
 
-    const avatarUrl = data.accounts[0].avatar_static;
+    let avatarUrl = "";
+    data.links.forEach((link) => {
+      if (link.rel === "http://webfinger.net/rel/avatar") {
+        avatarUrl = link.rel.href;
+      }
+    });
+
+    if (avatarUrl === "") {
+      console.log(`No avatar found in webfinger data for user ${username}`);
+      return await fetch("https://placekitten.com/g/400/400");
+    }
+
     return await fetch(avatarUrl);
   } catch (error) {
-    console.log(`Couldn't fetch from API: ${apiUrl}`, error);
+    console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
     return await fetch("https://placekitten.com/g/400/400");
   }
 };
