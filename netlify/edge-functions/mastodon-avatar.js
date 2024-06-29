@@ -9,13 +9,15 @@ export default async (request, context) => {
 
   if (!username) {
     console.log(`No username defined: ${request.url}`);
-    return await fetch("https://placekitten.com/g/400/400");
+    return await fetch("https://dummyimage.com/400x400&text=No+username");
   }
 
   const matches = username.match(MASTODON_USERNAME_REGEX);
   if (matches.length !== 3) {
     console.log(`No Mastodon username matched: ${JSON.stringify(matches)}`);
-    return await fetch("https://placekitten.com/g/400/400");
+    return await fetch(
+      "https://dummyimage.com/400x400&text=Wrong+username+format"
+    );
   }
 
   const [, user, server] = matches;
@@ -27,7 +29,9 @@ export default async (request, context) => {
     const data = JSON.parse(await response.text());
     if (data.links.length === 0) {
       console.log(`No webfinger link found for user ${username}`);
-      return await fetch("https://placekitten.com/g/400/400");
+      return await fetch(
+        "https://dummyimage.com/400x400&text=No+webfinger+link"
+      );
     }
 
     let avatarUrl = "";
@@ -39,13 +43,13 @@ export default async (request, context) => {
 
     if (avatarUrl === "") {
       console.log(`No avatar found in webfinger data for user ${username}`);
-      return await fetch("https://placekitten.com/g/400/400");
+      return await fetch("https://dummyimage.com/400x400&text=No+avatar");
     }
 
     return await fetch(avatarUrl);
   } catch (error) {
     console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
-    return await fetch("https://placekitten.com/g/400/400");
+    return await fetch("https://dummyimage.com/400x400&text=Fetch+error");
   }
 };
 
