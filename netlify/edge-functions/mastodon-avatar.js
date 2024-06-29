@@ -49,7 +49,9 @@ export default async (request, context) => {
     return await fetch(avatarUrl);
   } catch (error) {
     console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
-    return await fetch("https://dummyimage.com/400x400&text=Fetch+error");
+    return await fetch(
+      `https://dummyimage.com/400x400&text=Fetch+error+for+${webfingerUrl}`
+    );
   }
 };
 
