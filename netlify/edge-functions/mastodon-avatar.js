@@ -52,7 +52,10 @@ export default async (request, context) => {
   } catch (error) {
     console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
     return await fetch(
-      `https://dummyimage.com/400x400/639/fff.png&text=Fetch+error+for+${webfingerUrl}`
+      `https://dummyimage.com/400x400/639/fff.png&text=Fetch+error+for+${webfingerUrl.replace(
+        "?",
+        "0x23"
+      )}`
     );
   }
 };
