@@ -30,7 +30,7 @@ export default async (request, context) => {
     if (data.links.length === 0) {
       console.log(`No webfinger link found for user ${username}`);
       return await fetch(
-        "https://dummyimage.com/400x400&text=No+webfinger+link"
+        "https://dummyimage.com/400x400/639/fff.png&text=No+webfinger+link"
       );
     }
 
@@ -43,14 +43,16 @@ export default async (request, context) => {
 
     if (avatarUrl === "") {
       console.log(`No avatar found in webfinger data for user ${username}`);
-      return await fetch("https://dummyimage.com/400x400&text=No+avatar");
+      return await fetch(
+        "https://dummyimage.com/400x400/639/fff.png&text=No+avatar"
+      );
     }
 
     return await fetch(avatarUrl);
   } catch (error) {
     console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
     return await fetch(
-      `https://dummyimage.com/400x400&text=Fetch+error+for+${webfingerUrl}`
+      `https://dummyimage.com/400x400/639/fff.png&text=Fetch+error+for+${webfingerUrl}`
     );
   }
 };
