@@ -33,29 +33,29 @@ export default async (request, context) => {
     );
   }
 
+  const data = JSON.parse(await response.text());
+  if (data.links.length === 0) {
+    console.log(`No webfinger link found for user ${username}`);
+    return await fetch(
+      "https://dummyimage.com/400x400/639/fff.png&text=No+webfinger+link"
+    );
+  }
+
+  let avatarUrl = "";
+  data.links.forEach((link) => {
+    if (link.rel === "http://webfinger.net/rel/avatar") {
+      avatarUrl = link.rel.href;
+    }
+  });
+
+  if (avatarUrl === "") {
+    console.log(`No avatar found in webfinger data for user ${username}`);
+    return await fetch(
+      "https://dummyimage.com/400x400/639/fff.png&text=No+avatar"
+    );
+  }
+
   try {
-    const data = JSON.parse(await response.text());
-    if (data.links.length === 0) {
-      console.log(`No webfinger link found for user ${username}`);
-      return await fetch(
-        "https://dummyimage.com/400x400/639/fff.png&text=No+webfinger+link"
-      );
-    }
-
-    let avatarUrl = "";
-    data.links.forEach((link) => {
-      if (link.rel === "http://webfinger.net/rel/avatar") {
-        avatarUrl = link.rel.href;
-      }
-    });
-
-    if (avatarUrl === "") {
-      console.log(`No avatar found in webfinger data for user ${username}`);
-      return await fetch(
-        "https://dummyimage.com/400x400/639/fff.png&text=No+avatar"
-      );
-    }
-
     return await fetch(avatarUrl);
   } catch (error) {
     console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
