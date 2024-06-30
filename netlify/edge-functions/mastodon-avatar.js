@@ -56,7 +56,7 @@ export default async (request, context) => {
   }
 
   return await fetch(
-    `https://dummyimage.com/400x400/639/fff.png&text=#${avatarUrl}#`
+    `https://dummyimage.com/400x400/639/fff.png&text=O${avatarUrl}P`
   );
 
   try {
