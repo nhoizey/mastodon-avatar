@@ -23,9 +23,17 @@ export default async (request, context) => {
   const [, user, server] = matches;
   const webfingerUrl = `https://${server}/.well-known/webfinger?resource=acct:${user}@${server}`;
 
+  let response;
   try {
-    const response = await fetch(webfingerUrl);
+    response = await fetch(webfingerUrl);
+  } catch (error) {
+    console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
+    return await fetch(
+      `https://dummyimage.com/400x400/639/fff.png&text=Fetch+error:+${error}`
+    );
+  }
 
+  try {
     const data = JSON.parse(await response.text());
     if (data.links.length === 0) {
       console.log(`No webfinger link found for user ${username}`);
@@ -52,7 +60,7 @@ export default async (request, context) => {
   } catch (error) {
     console.log(`Couldn't fetch from webfinger URL: ${webfingerUrl}`, error);
     return await fetch(
-      `https://dummyimage.com/400x400/639/fff.png&text=Fetch+error:+${error}`
+      `https://dummyimage.com/400x400/639/fff.png&text=Error:+${error}`
     );
   }
 };
