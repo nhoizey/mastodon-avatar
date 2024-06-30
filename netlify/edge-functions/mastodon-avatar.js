@@ -44,7 +44,7 @@ export default async (request, context) => {
   let avatarUrl = "";
   data.links.forEach((link) => {
     if (link.rel === "http://webfinger.net/rel/avatar") {
-      avatarUrl = link.rel.href;
+      avatarUrl = link.href;
     }
   });
 
@@ -54,10 +54,6 @@ export default async (request, context) => {
       "https://dummyimage.com/400x400/639/fff.png&text=No+avatar"
     );
   }
-
-  return await fetch(
-    `https://dummyimage.com/400x400/639/fff.png&text=O${avatarUrl}P`
-  );
 
   try {
     return await fetch(avatarUrl);
