@@ -55,6 +55,10 @@ export default async (request, context) => {
     );
   }
 
+  return await fetch(
+    `https://dummyimage.com/400x400/639/fff.png&text=${avatarUrl}`
+  );
+
   try {
     return await fetch(avatarUrl);
   } catch (error) {
